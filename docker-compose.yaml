@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+#  backend:
+#    container_name: backend
+#    build: .
+#    ports:
+#      - 3000:3000
+#    restart: on-failure
+#    volumes:
+#    - .:/app
+#    depends_on:
+#      - db
+#    networks:
+#      - application
+
+  db:
+   image: mysql:latest
+   container_name: db
+   ports:
+     - 3306:3306
+   environment:
+     - MYSQL_ROOT_HOST=${DB_HOST}
+     - MYSQL_USER=${DB_USER}
+     - MYSQL_PASSWORD=${DB_PASSWORD}
+     - MYSQL_DATABASE=${DB_NAME}
+     - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+   volumes:
+     - dbdata:/var/lib/mysql  # persist repository locally even if container shuts down
+   networks:
+     - application
+
+  phpmyadmin:
+   image: phpmyadmin/phpmyadmin
+   container_name: phpmyadmin_db
+   depends_on:
+     - db
+   environment:
+     - PMA_HOST=db # Note the "mysql". Must be the name of the what you used as the mysql service.
+     - PMA_USER=${DB_USER}
+     - PMA_PORT=${DB_PORT}
+     - PMA_PASSWORD=${DB_PASSWORD}
+   ports:
+     - 9090:80
+   restart: always
+   networks:
+     - application
+
+volumes:
+  dbdata:
+
+networks:
+  application:
+    driver: bridge
