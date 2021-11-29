@@ -11,9 +11,6 @@ import (
 	"time"
 )
 
-// DB gorm connector
-var DB *gorm.DB
-
 // Connect connect to db
 func Connect() {
 	var err error
@@ -48,15 +45,32 @@ func AutoMigrate() {
 		models.Country{},
 		models.CountryTranslation{}); err == nil && DB.Migrator().HasTable(&models.Locale{}) {
 		if err := DB.First(&models.Locale{}).Error; errors.Is(err, gorm.ErrRecordNotFound) {
-			DB.Create(&models.Locale{Name: "Uk-ua", Default: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()})
-			DB.Create(&models.Locale{Name: "Ru-ru", Default: 0, CreatedAt: time.Now(), UpdatedAt: time.Now()})
+			locales := []models.Locale{
+				{Name: "uk_UA", Default: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{Name: "ru_RU", Default: 0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{Name: "en_GB", Default: 0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			}
+			DB.Create(&locales)
 
-			DB.Create(&models.Product{Amount: 3, Price: 200.0, CreatedAt: time.Now(), UpdatedAt: time.Now()})
-			DB.Create(&models.Product{Amount: 2, Price: 400.0, CreatedAt: time.Now(), UpdatedAt: time.Now()})
+			products := []models.Product{
+				{Amount: 2, Price: 200.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{Amount: 4, Price: 300.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{Amount: 6, Price: 100.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			}
+			DB.Create(&products)
 
-			DB.Create(&models.ProductTranslation{TranslatableID: 1, Title: "Title", Description: "Description", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()})
-			DB.Create(&models.ProductTranslation{TranslatableID: 1, Title: "Название", Description: "Описание", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()})
-			DB.Create(&models.ProductTranslation{TranslatableID: 2, Title: "Qwerty", Description: "Asdfghj", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()})
+			productTranslations := []models.ProductTranslation{
+				{TranslatableID: 1, Title: "Назва", Description: "Опис", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 1, Title: "Название", Description: "Описание", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 1, Title: "Title", Description: "Description", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 2, Title: "Назва 2", Description: "Опис 2", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 2, Title: "Название 2", Description: "Описание 2", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 2, Title: "Title 2", Description: "Description 2", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 3, Title: "Йцукен 42", Description: "Фівапро 42", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 3, Title: "Йцукен 42", Description: "Фывапро 42", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				{TranslatableID: 3, Title: "Qwerty 42", Description: "Asdfghj 42", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			}
+			DB.Create(&productTranslations)
 		}
 	}
 }

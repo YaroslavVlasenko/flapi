@@ -3,13 +3,18 @@ package handlers
 import (
 	"app-backend/internal/database"
 	"app-backend/internal/models"
+	"app-backend/internal/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
 // GetAllProducts query all products
 func GetAllProducts(c *fiber.Ctx) error {
-	var products []models.Product
-	database.DB.Preload("Translations.Locale").Find(&products)
+	var products *[]models.Product
+	pagination := utils.GeneratePaginationFromRequest(c)
+	offset := (pagination.Page - 1) * pagination.Limit
+
+	database.DB.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort).Preload("Translations.Locale").Find(&products)
+
 	return c.JSON(fiber.Map{"status": "success", "message": "All products", "data": products})
 }
 
@@ -18,7 +23,7 @@ func GetProduct(c *fiber.Ctx) error {
 	var product models.Product
 	id := c.Params("id")
 
-	if err := database.DB.First(&product, id).Error; err != nil {
+	if err := database.DB.Preload("Translations.Locale").First(&product, id).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "No product found with ID", "data": nil})
 	}
 

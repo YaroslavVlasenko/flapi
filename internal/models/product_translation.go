@@ -12,7 +12,7 @@ type ProductTranslation struct {
 	Title          string       `json:"title"`
 	Description    string       `json:"description"`
 	LocaleID       uint         `json:"-"`
-	Locale         Locale       `json:"locale" gorm:"foreignKey:LocaleID"`
+	Locale         Locale       `json:"locale,omitempty" gorm:"foreignKey:LocaleID"`
 	CreatedAt      time.Time    `json:"created_at"`
 	UpdatedAt      time.Time    `json:"updated_at"`
 	DeletedAt      sql.NullTime `json:"-"`

@@ -5,6 +5,8 @@ import (
 	"app-backend/internal/middlewares"
 	"app-backend/internal/router"
 	"fmt"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
 	"log"
 	"time"
@@ -20,16 +22,23 @@ func main() {
 		CaseSensitive: true,
 		StrictRouting: true,
 		ServerHeader:  "Fiber",
-		ReadTimeout:   10 * time.Second,
+		ReadTimeout:   7 * time.Second,
 		WriteTimeout:  3 * time.Second,
+		AppName: "Test Application v1.0.1",
 	})
 
 	// Cors middleware
 	app.Use(cors.New())
+	// Compression level middleware
+	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
 	// Custom Timer middleware
 	app.Use(middlewares.Timer())
 	// Default middleware
 	app.Use(pprof.New())
+	// CSRF middleware
+	//app.Use(csrf.New())
+	// Favicon middleware
+	app.Use(favicon.New())
 
 	// Open connection with DB
 	database.Connect()
