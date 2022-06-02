@@ -1,7 +1,8 @@
 package middlewares
 
 import (
-	"app-backend/internal/configs"
+	"github.com/YaroslavVlasenko/flapi/internal/configs"
+	"github.com/YaroslavVlasenko/flapi/internal/responses"
 
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
@@ -18,8 +19,8 @@ func Protected() fiber.Handler {
 func jwtError(c *fiber.Ctx, err error) error {
 	if err.Error() == "Missing or malformed JWT" {
 		return c.Status(fiber.StatusBadRequest).
-			JSON(fiber.Map{"status": "error", "message": "Missing or malformed JWT", "data": nil})
+			JSON(responses.Error("error", "Missing or malformed JWT", err.Error()))
 	}
 	return c.Status(fiber.StatusUnauthorized).
-		JSON(fiber.Map{"status": "error", "message": "Invalid or expired JWT", "data": nil})
+		JSON(responses.Error("error", "Invalid or expired JWT", err.Error()))
 }

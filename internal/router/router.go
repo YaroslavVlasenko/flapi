@@ -1,8 +1,8 @@
 package router
 
 import (
-	"app-backend/internal/handlers"
-	"app-backend/internal/middlewares"
+	"github.com/YaroslavVlasenko/flapi/internal/handlers"
+	"github.com/YaroslavVlasenko/flapi/internal/middlewares"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -10,14 +10,13 @@ import (
 
 // SetupRoutes setup router `api
 func SetupRoutes(app *fiber.App) {
+	// Monitor Middleware page
+	app.Get("/dashboard", monitor.New())
 
 	// Middleware
 	api := app.Group("/api", logger.New())
 	v1 := api.Group("/v1")
 	v1.Get("/", handlers.Hello)
-
-	// Monitor Middleware page
-	app.Get("/dashboard", monitor.New())
 
 	// Auth
 	auth := v1.Group("/auth")
@@ -35,6 +34,6 @@ func SetupRoutes(app *fiber.App) {
 	product.Get("/all", handlers.GetAllProducts)
 	product.Get("/:id", handlers.GetProduct)
 	product.Post("/", middlewares.Protected(), handlers.CreateProduct)
-	//user.Patch("/:id", middleware.Protected(), handler.UpdateProduct)
+	product.Patch("/:id", middlewares.Protected(), handlers.UpdateProduct)
 	product.Delete("/:id", middlewares.Protected(), handlers.DeleteProduct)
 }

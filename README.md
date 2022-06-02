@@ -4,6 +4,6 @@
 [Fiber] (https://docs.gofiber.io/)
 [GORM] (https://gorm.io/docs/index.html)
 
-- Скопировать файл окружения(если его нет) cp .env.sample .env
-- Запустить докер
-- Запустить air
+- cp .env.sample .env
+- Run docker
+- Run air

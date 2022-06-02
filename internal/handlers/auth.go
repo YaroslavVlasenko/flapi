@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"app-backend/internal/configs"
-	"app-backend/internal/database"
-	"app-backend/internal/models"
-	"app-backend/internal/responses"
+	"github.com/YaroslavVlasenko/flapi/internal/configs"
+	"github.com/YaroslavVlasenko/flapi/internal/database"
+	"github.com/YaroslavVlasenko/flapi/internal/models"
+	"github.com/YaroslavVlasenko/flapi/internal/responses"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -59,19 +59,19 @@ func Login(c *fiber.Ctx) error {
 	var ud UserData
 
 	if err := c.BodyParser(&input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(responses.Error("error", "Error on login request", err))
+		return c.Status(fiber.StatusBadRequest).JSON(responses.Error("error", "Error on login request", err.Error()))
 	}
 	identity := input.Identity
 	pass := input.Password
 
 	email, err := getUserByEmail(identity)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(responses.Error("error", "Error on email", err))
+		return c.Status(fiber.StatusUnauthorized).JSON(responses.Error("error", "Error on email", err.Error()))
 	}
 
 	user, err := getUserByUsername(identity)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(responses.Error("error", "Error on username", err))
+		return c.Status(fiber.StatusUnauthorized).JSON(responses.Error("error", "Error on username", err.Error()))
 	}
 
 	if email == nil && user == nil {
@@ -107,7 +107,7 @@ func Login(c *fiber.Ctx) error {
 
 	t, err := token.SignedString([]byte(configs.Load("SECRET")))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(responses.Error("error", "Internal Server Error", err))
+		return c.Status(fiber.StatusInternalServerError).JSON(responses.Error("error", "Internal Server Error", err.Error()))
 	}
 
 	return c.JSON(responses.Success("success", "Success login", t))

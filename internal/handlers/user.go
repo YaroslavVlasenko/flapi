@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"app-backend/internal/database"
-	"app-backend/internal/models"
-	"app-backend/internal/responses"
+	"github.com/YaroslavVlasenko/flapi/internal/database"
+	"github.com/YaroslavVlasenko/flapi/internal/models"
+	"github.com/YaroslavVlasenko/flapi/internal/responses"
 	"strconv"
 
 	"github.com/dgrijalva/jwt-go"

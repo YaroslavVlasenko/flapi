@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"app-backend/internal/responses"
+	"github.com/YaroslavVlasenko/flapi/internal/responses"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -1,10 +1,11 @@
 package database
 
 import (
-	"app-backend/internal/configs"
-	"app-backend/internal/models"
 	"errors"
 	"fmt"
+	"github.com/YaroslavVlasenko/flapi/internal/configs"
+	"github.com/YaroslavVlasenko/flapi/internal/models"
+	"github.com/bxcodec/faker/v3"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"strconv"
@@ -52,25 +53,52 @@ func AutoMigrate() {
 			}
 			DB.Create(&locales)
 
-			products := []models.Product{
-				{Amount: 2, Price: 200.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{Amount: 4, Price: 300.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{Amount: 6, Price: 100.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			for i := 0; i < 30; i++ {
+				a := models.Product{}
+				err := faker.FakeData(&a)
+				if err != nil {
+					return
+				}
+				DB.Create(&a)
 			}
-			DB.Create(&products)
 
-			productTranslations := []models.ProductTranslation{
-				{TranslatableID: 1, Title: "Назва", Description: "Опис", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 1, Title: "Название", Description: "Описание", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 1, Title: "Title", Description: "Description", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 2, Title: "Назва 2", Description: "Опис 2", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 2, Title: "Название 2", Description: "Описание 2", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 2, Title: "Title 2", Description: "Description 2", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 3, Title: "Йцукен 42", Description: "Фівапро 42", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 3, Title: "Йцукен 42", Description: "Фывапро 42", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-				{TranslatableID: 3, Title: "Qwerty 42", Description: "Asdfghj 42", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			for i := 0; i < 30; i++ {
+				a := models.Country{}
+				err := faker.FakeData(&a)
+				if err != nil {
+					return
+				}
+				DB.Create(&a)
 			}
-			DB.Create(&productTranslations)
+
+			for i := 0; i < 30; i++ {
+				a := models.Brand{}
+				err := faker.FakeData(&a)
+				if err != nil {
+					return
+				}
+				DB.Create(&a)
+			}
+
+			//products := []models.Product{
+			//	{Amount: 2, Price: 200.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{Amount: 4, Price: 300.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{Amount: 6, Price: 100.0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//}
+			//DB.Create(&products)
+			//
+			//productTranslations := []models.ProductTranslation{
+			//	{TranslatableID: 1, Title: "Назва", Description: "Опис", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 1, Title: "Название", Description: "Описание", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 1, Title: "Title", Description: "Description", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 2, Title: "Назва 2", Description: "Опис 2", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 2, Title: "Название 2", Description: "Описание 2", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 2, Title: "Title 2", Description: "Description 2", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 3, Title: "Йцукен 42", Description: "Фівапро 42", LocaleID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 3, Title: "Йцукен 42", Description: "Фывапро 42", LocaleID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//	{TranslatableID: 3, Title: "Qwerty 42", Description: "Asdfghj 42", LocaleID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			//}
+			//DB.Create(&productTranslations)
 		}
 	}
 }

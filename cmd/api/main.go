@@ -1,10 +1,10 @@
 package main
 
 import (
-	"app-backend/internal/database"
-	"app-backend/internal/middlewares"
-	"app-backend/internal/router"
 	"fmt"
+	"github.com/YaroslavVlasenko/flapi/internal/database"
+	"github.com/YaroslavVlasenko/flapi/internal/middlewares"
+	"github.com/YaroslavVlasenko/flapi/internal/router"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
